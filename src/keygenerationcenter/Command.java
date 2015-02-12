@@ -52,10 +52,13 @@ public class Command{
 
             //Read output of commands (if status is not 0)
             String line;           
-            while ((line = reader.readLine())!= null || (line = error.readLine())!= null) {
+            while ((line = reader.readLine())!= null) {
                 output.append(line).append("\n");
             }
-
+            while ((line = error.readLine())!= null){
+                 output.append(line).append("\n");
+            }
+            
             //returns status code of command; 0 if successful
             int status_code = p.waitFor();
             System.out.println(strcom + " exited with status code " + status_code + ".");

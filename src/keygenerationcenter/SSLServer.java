@@ -23,14 +23,23 @@ public class SSLServer implements Runnable{
     private DataOutputStream streamOut = null;
     
     private KeyGen kg;
+    private AttributeAPI aa;
     
     public SSLServer(int port, String keystore, char[] pwd){
         String dir = System.getProperty("user.dir");
         PORT = port;
+        
         //KEYSTORE = keystore;
         KEYSTORE = dir + "/SSLkeys/server.jks";
+        
         //PWD = pwd;
         PWD = "password".toCharArray();
+        
+        //Generate system-wide public and master keys
+        kg = new KeyGen();
+        
+        aa = new AttributeAPI();
+        aa.setVisible(true);
     }
     
     @Override
@@ -60,29 +69,32 @@ public class SSLServer implements Runnable{
                 
                 streamOut = new DataOutputStream(clientSocket.getOutputStream());
                 streamIn = new DataInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-                                                
-                //Generate system-wide public and master keys
-                kg = new KeyGen();
-                kg.generateKeys("master_key", "public_key");
+                kg.generateKeys();
                 
                 //Server receives Client's message 
                 String line = streamIn.readUTF();
                 System.out.println(line);
                 
-                if ("del".equals(line)){
+                if (line.equals("delete")){ //Delete keys - KGC should not tore any keys
                     kg.deleteKeys();
                 }
-                else{
-                // Server sends key file
-                File myFile = new File (line);
+                else if (line.equals("attributes")){
+                    //Server recieves Client's username
+                    String username = streamIn.readUTF();
+                    System.out.println(username);  
+                    aa.addUserToList(username);
+                }
+                else if (line.equals("master_key") || line.equals("public_key")){
+                    // Server sends key file
+                    File myFile = new File (line);
 
-                //Server sends file size
-                String filesize = "" + (int)myFile.length();
-                streamOut.writeUTF(filesize);
-                streamOut.flush();
+                    //Server sends file size
+                    String filesize = "" + (int)myFile.length();
+                    streamOut.writeUTF(filesize);
+                    streamOut.flush();
 
-                //Server sends file
-                sendFile(streamOut, myFile);
+                    //Server sends file
+                    sendFile(streamOut, myFile);
                 }
              }
         } catch (Exception e) {

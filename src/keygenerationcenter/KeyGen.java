@@ -5,15 +5,18 @@ package keygenerationcenter;
 public final class KeyGen {
      
     Command cmd = new Command();
-    String mk = "/master_key";
-    String pk = "/public_key";
-    String dir;
+    public String mk;
+    public String pk;
+    public String dir;
     
     public KeyGen(){
         dir = System.getProperty("user.dir");
+        mk = dir + "/master_key";
+        pk = dir + "/public_key";
     } 
     
-    public void generateKeys(String mk, String pk){
+    public void generateKeys(){
+        System.out.println(pk + " " + mk);
         cmd.setup(pk, mk);
     }
     
@@ -22,14 +25,6 @@ public final class KeyGen {
         cmd.execute(remove, "rm");
         remove[2] = dir + pk;
         cmd.execute(remove, "rm");
-    }
-    
-    public void setMkLocation(String dir){
-        mk = dir + mk;
-    }
-    
-    public void setPkLocation(String dir){
-        pk = dir + pk;
     }
     
     public String getMkLocation(){
