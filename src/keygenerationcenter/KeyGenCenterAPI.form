@@ -53,6 +53,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="StartServer" min="-2" pref="117" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel4" alignment="0" min="-2" pref="151" max="-2" attributes="0"/>
@@ -65,13 +66,9 @@
                                   <Component id="KeyStoreTextField" alignment="0" max="32767" attributes="0"/>
                                   <Component id="PwdTextField" max="32767" attributes="0"/>
                               </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="BrowseKeyStore" min="-2" pref="106" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="StartServer" min="-2" pref="117" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="Cancel" max="32767" attributes="0"/>
-                          <Component id="BrowseKeyStore" pref="106" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="41" max="32767" attributes="0"/>
                   </Group>
@@ -96,12 +93,9 @@
                           <Component id="PwdTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="StartServer" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="Cancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="StartServer" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -149,15 +143,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JPasswordField" name="PwdTextField">
-            </Component>
-            <Component class="javax.swing.JButton" name="Cancel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cancel"/>
-                <Property name="enabled" type="boolean" value="false"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CancelActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

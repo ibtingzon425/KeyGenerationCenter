@@ -28,7 +28,6 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
         BrowseKeyStore = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         PwdTextField = new javax.swing.JPasswordField();
-        Cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Key Generation Center");
@@ -61,14 +60,6 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
 
         jLabel4.setText("Key Store Password");
 
-        Cancel.setText("Cancel");
-        Cancel.setEnabled(false);
-        Cancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -76,6 +67,7 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(StartServer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -85,12 +77,9 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(port, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                             .addComponent(KeyStoreTextField)
-                            .addComponent(PwdTextField)))
-                    .addComponent(StartServer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Cancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BrowseKeyStore, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                            .addComponent(PwdTextField))
+                        .addGap(18, 18, 18)
+                        .addComponent(BrowseKeyStore, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -109,11 +98,9 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PwdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StartServer)
-                    .addComponent(Cancel))
-                .addGap(38, 38, 38))
+                .addGap(42, 42, 42)
+                .addComponent(StartServer)
+                .addGap(37, 37, 37))
         );
 
         jTabbedPane1.addTab("Configure", jPanel1);
@@ -134,8 +121,7 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
 
     private void StartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartServerActionPerformed
         SSLServer server = new SSLServer(Integer.parseInt(port.getText()), KeyStoreTextField.getText(), PwdTextField.getPassword());
-        StartServer.setEnabled(false);
-        Cancel.setEnabled(true); 
+        //StartServer.setEnabled(false);
         
         server_thread = new Thread(server, "Server");
         server_thread.start();     
@@ -153,12 +139,6 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
     private void KeyStoreTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KeyStoreTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_KeyStoreTextFieldActionPerformed
-
-    private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
-        StartServer.setEnabled(true);
-        Cancel.setEnabled(false);
-        server_thread.interrupt();
-    }//GEN-LAST:event_CancelActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -197,7 +177,6 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BrowseKeyStore;
-    private javax.swing.JButton Cancel;
     private javax.swing.JTextField KeyStoreTextField;
     private javax.swing.JPasswordField PwdTextField;
     private javax.swing.JButton StartServer;

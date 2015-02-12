@@ -12,8 +12,6 @@ public final class KeyGen {
         String dir = System.getProperty("user.dir");
         String[] mkdir = {"mkdir", "-p", dir}; 
         //cmd.execute(mkdir, "mkdir");
-        mk = dir + mk;
-        pk = dir + pk;
         //generateKeys(mk, pk);
     } 
     
@@ -26,6 +24,14 @@ public final class KeyGen {
         cmd.execute(remove, "rm");
         remove[2] = pk;
         cmd.execute(remove, "rm");
+    }
+    
+    public void setMkLocation(String dir){
+        mk = dir + mk;
+    }
+    
+    public void setPkLocation(String dir){
+        pk = dir + pk;
     }
     
     public String getMkLocation(){
