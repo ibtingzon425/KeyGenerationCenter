@@ -7,12 +7,10 @@ public final class KeyGen {
     Command cmd = new Command();
     String mk = "/master_key";
     String pk = "/public_key";
+    String dir;
     
     public KeyGen(){
-        String dir = System.getProperty("user.dir");
-        String[] mkdir = {"mkdir", "-p", dir}; 
-        //cmd.execute(mkdir, "mkdir");
-        //generateKeys(mk, pk);
+        dir = System.getProperty("user.dir");
     } 
     
     public void generateKeys(String mk, String pk){
@@ -20,9 +18,9 @@ public final class KeyGen {
     }
     
     public void deleteKeys(){
-        String[] remove = {"rm", "-f", mk};
+        String[] remove = {"rm", "-f", dir + mk};
         cmd.execute(remove, "rm");
-        remove[2] = pk;
+        remove[2] = dir + pk;
         cmd.execute(remove, "rm");
     }
     

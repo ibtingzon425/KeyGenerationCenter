@@ -8,6 +8,7 @@ import javax.net.ssl.*;
 
 /**
  * @author Isabelle Tingzon
+ * @author Angelu Kaye Tiu
  */
 public class SSLServer implements Runnable{
     
@@ -24,9 +25,12 @@ public class SSLServer implements Runnable{
     private KeyGen kg;
     
     public SSLServer(int port, String keystore, char[] pwd){
+        String dir = System.getProperty("user.dir");
         PORT = port;
-        KEYSTORE = keystore;
-        PWD = pwd;
+        //KEYSTORE = keystore;
+        KEYSTORE = dir + "/SSLkeys/server.jks";
+        //PWD = pwd;
+        PWD = "password".toCharArray();
     }
     
     @Override
@@ -65,19 +69,21 @@ public class SSLServer implements Runnable{
                 String line = streamIn.readUTF();
                 System.out.println(line);
                 
-                // Server sends master key
+                if ("del".equals(line)){
+                    kg.deleteKeys();
+                }
+                else{
+                // Server sends key file
                 File myFile = new File (line);
-                
+
                 //Server sends file size
                 String filesize = "" + (int)myFile.length();
                 streamOut.writeUTF(filesize);
                 streamOut.flush();
-                    
+
                 //Server sends file
                 sendFile(streamOut, myFile);
-                
-                if (line == "public_key")
-                    kg.deleteKeys();
+                }
              }
         } catch (Exception e) {
              e.printStackTrace();
@@ -99,7 +105,7 @@ public class SSLServer implements Runnable{
     }
         
    private static void printServerSocketInfo(SSLServerSocket s) {
-        System.out.println("Server socket class: " + s.getClass());
+        System.out.println("   Server socket class: " + s.getClass());
         System.out.println("   Socker address = " + s.getInetAddress().toString());
         System.out.println("   Socker port = " + s.getLocalPort());
         System.out.println("   Need client authentication = " + s.getNeedClientAuth());
