@@ -21,7 +21,7 @@ public class SSLServer implements Runnable{
     private DataOutputStream streamOut = null;
     
     private KeyGen kg;
-    private AttributeAPI aa;
+    private KeyGenGUI aa;
     
     public SSLServer(int port, String keystore, char[] pwd){
         String dir = System.getProperty("user.dir");
@@ -36,7 +36,7 @@ public class SSLServer implements Runnable{
         //Generate system-wide public and master keys
         kg = new KeyGen();
         
-        aa = new AttributeAPI();
+        aa = new KeyGenGUI();
         aa.setVisible(true);
     }
     

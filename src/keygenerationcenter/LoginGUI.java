@@ -11,12 +11,12 @@ import javax.swing.event.ListSelectionListener;
 /**
  * @author Isabelle Tingzon
  */
-public class KeyGenCenterAPI extends javax.swing.JFrame {
+public class LoginGUI extends javax.swing.JFrame {
     private Object FileChooserTextField;
     public DefaultListModel listModel;
     private Thread server_thread;
 
-    public KeyGenCenterAPI() {
+    public LoginGUI() {
         initComponents();
         setResizable(false);
         KeyGenLoginTabPane.setEnabledAt(1, false);
@@ -186,7 +186,7 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
 
     private void BrowseKeyStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseKeyStoreActionPerformed
         final JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(KeyGenCenterAPI.this);
+        int returnVal = fc.showOpenDialog(LoginGUI.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             KeyStoreTextField.setText(file.getAbsolutePath());
@@ -205,7 +205,7 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
         try {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
-            Logger.getLogger(KeyGenCenterAPI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         server_thread.start();
         this.setVisible(false);
@@ -231,14 +231,38 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(KeyGenCenterAPI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(KeyGenCenterAPI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(KeyGenCenterAPI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(KeyGenCenterAPI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -251,7 +275,7 @@ public class KeyGenCenterAPI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new KeyGenCenterAPI().setVisible(true);
+                new LoginGUI().setVisible(true);
             }
         });
     }

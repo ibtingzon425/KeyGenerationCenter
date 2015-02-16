@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws IOException {        
-        KeyGenCenterAPI attr = new KeyGenCenterAPI();
+        LoginGUI attr = new LoginGUI();
         attr.setVisible(true);
     }   
 }
