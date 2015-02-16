@@ -2,8 +2,6 @@ package keygenerationcenter;
 
 import java.io.*;
 import java.security.KeyStore;
-import java.security.cert.*;
-import java.util.*;
 import javax.net.ssl.*;
 
 /**

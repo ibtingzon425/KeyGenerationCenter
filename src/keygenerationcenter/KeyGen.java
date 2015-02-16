@@ -25,14 +25,5 @@ public final class KeyGen {
         cmd.execute(remove, "rm");
         remove[2] = dir + pk;
         cmd.execute(remove, "rm");
-    }
-    
-    public String getMkLocation(){
-        return mk;
-    }
-    
-    public String getPkLocation(){
-        return pk;
-    }
-    
+    }    
 }
