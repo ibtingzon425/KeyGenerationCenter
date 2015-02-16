@@ -73,7 +73,7 @@ public class SSLServer implements Runnable{
                 String line = streamIn.readUTF();
                 System.out.println(line);
                 
-                if (line.equals("delete")){ //Delete keys - KGC should not tore any keys
+                if (line.equals("delete")){ //Delete keys - KGC should not store any keys
                     kg.deleteKeys();
                 }
                 else if (line.equals("attributes")){
@@ -81,8 +81,10 @@ public class SSLServer implements Runnable{
                     String username = streamIn.readUTF();
                     System.out.println(username);  
                     aa.addUserToList(username);
+                    
+                    String appId = null;
                 }
-                else if (line.equals("master_key") || line.equals("public_key")){
+                else if (line.equals("master_key") || line.equals("pub_key")){
                     // Server sends key file
                     File myFile = new File (line);
 
@@ -92,7 +94,7 @@ public class SSLServer implements Runnable{
                     streamOut.flush();
 
                     //Server sends file
-                    sendFile(streamOut, myFile);
+                    sendFile(streamOut, myFile, (int)myFile.length());
                 }
              }
         } catch (Exception e) {
@@ -100,19 +102,31 @@ public class SSLServer implements Runnable{
         }
     }
     
-    public void sendFile(DataOutputStream os, File myFile) throws IOException{
+    public void sendFile(DataOutputStream os, File myFile, int filesize) throws IOException{
          if(os != null && myFile.exists() && myFile.isFile()){
-            FileInputStream input = new FileInputStream(myFile);
+            FileInputStream fis = null;
+            
+            byte[] mybytearray = new byte[filesize];
+            fis = new FileInputStream(myFile);
+
+            int count;
+            while ((count = fis.read(mybytearray)) >= 0) {
+                os.write(mybytearray, 0, count);
+            }
+            os.flush();
+            System.out.println("File successfully sent!");
+        }
+    }
+   
+    //This piece of desn't wrk for Binary Files :P
+    /*FileInputStream input = new FileInputStream(myFile);
             os.writeLong(myFile.length());
             System.out.println(myFile.getAbsolutePath());
             int read = 0;
             while ((read = input.read()) != -1)
                 os.writeByte(read);
             os.flush();
-            input.close();
-            System.out.println("File successfully sent!");
-        }
-    }
+            input.close();*/
         
    private static void printServerSocketInfo(SSLServerSocket s) {
         System.out.println("   Server socket class: " + s.getClass());
