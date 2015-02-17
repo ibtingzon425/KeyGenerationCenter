@@ -35,7 +35,7 @@ public class SSLServer implements Runnable{
         
         //Generate system-wide public and master keys
         kg = new KeyGen();
-        
+        kg.generateKeys();
         aa = new KeyGenGUI();
         aa.setVisible(true);
     }
@@ -67,7 +67,6 @@ public class SSLServer implements Runnable{
                 
                 streamOut = new DataOutputStream(clientSocket.getOutputStream());
                 streamIn = new DataInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-                kg.generateKeys();
                 
                 //Server receives Client's message 
                 String line = streamIn.readUTF();
@@ -93,8 +92,24 @@ public class SSLServer implements Runnable{
                     streamOut.writeUTF(filesize);
                     streamOut.flush();
 
-                    //Server sends file
-                    sendFile(streamOut, myFile, (int)myFile.length());
+                    //Server sends file     
+                    FileInputStream fis = new FileInputStream(myFile);
+                    BufferedInputStream bis = new BufferedInputStream(fis);
+                    BufferedOutputStream out = new BufferedOutputStream(clientSocket.getOutputStream());
+
+                    byte[] bytes = new byte[(int)myFile.length()];
+                    
+                    int count;
+                    while ((count = bis.read(bytes)) > 0) {
+                        out.write(bytes, 0, count);
+                    }
+                    out.flush();
+                    out.close();
+                    fis.close();
+                    bis.close();
+                    System.out.println("File successfully sent!");
+                    streamOut.flush();
+                    //sendFile(streamOut, myFile, (int)myFile.length());
                 }
              }
         } catch (Exception e) {
@@ -113,12 +128,14 @@ public class SSLServer implements Runnable{
             while ((count = fis.read(mybytearray)) >= 0) {
                 os.write(mybytearray, 0, count);
             }
-            os.flush();
             System.out.println("File successfully sent!");
         }
     }
    
     //This piece of desn't wrk for Binary Files :P
+     /*while ((count = fis.read(mybytearray)) >= 0) {
+                        streamOut.write(mybytearray, 0, count);
+                    }*/
     /*FileInputStream input = new FileInputStream(myFile);
             os.writeLong(myFile.length());
             System.out.println(myFile.getAbsolutePath());

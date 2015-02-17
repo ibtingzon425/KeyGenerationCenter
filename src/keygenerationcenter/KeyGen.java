@@ -16,10 +16,10 @@ public final class KeyGen {
     } 
     
     public void generateKeys(){
-        System.out.println(pk + " " + mk);
-        cmd.setup(pk, mk);
-        //String[] setup = {"cpabe-setup"}; 
-        //cmd.execute(setup, "cpabe-setup");
+        //System.out.println(pk + " " + mk);
+        //cmd.setup(pk, mk);
+        String[] setup = {"cpabe-setup"}; 
+        cmd.execute(setup, "cpabe-setup");
     }
     
     public void generateSecretKey(String username, String[] attributes){
