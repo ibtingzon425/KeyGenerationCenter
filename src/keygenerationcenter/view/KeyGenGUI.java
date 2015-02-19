@@ -1,7 +1,6 @@
-package keygenerationcenter;
+package keygenerationcenter.view;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -32,7 +31,6 @@ public class KeyGenGUI extends javax.swing.JFrame {
     }
     
     private class ListenerClass implements ListSelectionListener {
-
         @Override
         public void valueChanged(ListSelectionEvent lse) {
             usernameTextField.setText(userList.getSelectedValue().toString());
@@ -165,7 +163,7 @@ public class KeyGenGUI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(userSecretKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(32, 32, 32)
                         .addComponent(GenerateSecretKeyButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -200,22 +198,12 @@ public class KeyGenGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void GenerateSecretKeyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateSecretKeyButtonActionPerformed
-        AttributeGen ag = new AttributeGen();
-        
         USERNAME = usernameTextField.getText();
         ATTRIBUTES = attributesTextField.getText();
         APPID = userAppIdTextField.getText();
         APPSECRET = userSecretKeyTextField.getText();
     }//GEN-LAST:event_GenerateSecretKeyButtonActionPerformed
 
-    public String getAppId(String username){
-        if (USERNAME.equals(username)){
-            return APPID;
-        }
-        return null;
-    }
-    
-    
     private void usernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameTextFieldActionPerformed

@@ -1,10 +1,14 @@
 package keygenerationcenter;
+
+import keygenerationcenter.dao.CommandDaoBethenImpl;
+import keygenerationcenter.dao.CommandFailedException;
+
 /**
  * @author Isabelle Tingzon
  */
 public final class KeyGen {
      
-    Command cmd = new Command();
+    CommandDaoBethenImpl cmd = new CommandDaoBethenImpl();
     public String mk;
     public String pk;
     public String dir;
@@ -15,21 +19,13 @@ public final class KeyGen {
         pk = dir + "/pub_key";
     } 
     
-    public void generateKeys(){
+    public void generateKeys() throws CommandFailedException{
         //System.out.println(pk + " " + mk);
         //cmd.setup(pk, mk);
-        String[] setup = {"cpabe-setup"}; 
-        cmd.execute(setup, "cpabe-setup");
+        cmd.setup(pk, mk);
     }
     
-    public void generateSecretKey(String username, String[] attributes){
+    public void generateSecretKey(String username, String[] attributes) throws CommandFailedException{
         cmd.keygen(username + "_key", pk, mk, attributes);
-    }
-    
-    public void deleteKeys(){
-        String[] remove = {"rm", "-f", dir + mk};
-        cmd.execute(remove, "rm");
-        remove[2] = dir + pk;
-        cmd.execute(remove, "rm");
-    }    
+    }  
 }

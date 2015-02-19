@@ -1,4 +1,4 @@
-package keygenerationcenter;
+package keygenerationcenter.view;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -7,6 +7,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import keygenerationcenter.SSLServer;
 
 /**
  * @author Isabelle Tingzon
@@ -178,7 +179,7 @@ public class LoginGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(KeyGenLoginTabPane, javax.swing.GroupLayout.PREFERRED_SIZE, 255, Short.MAX_VALUE)
+            .addComponent(KeyGenLoginTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
         );
 
         pack();

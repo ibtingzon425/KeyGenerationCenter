@@ -1,5 +1,6 @@
 package keygenerationcenter;
 
+import keygenerationcenter.view.LoginGUI;
 import java.io.IOException;
 
 /**
