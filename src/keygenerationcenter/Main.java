@@ -1,6 +1,6 @@
 package keygenerationcenter;
 
-import keygenerationcenter.view.LoginGUI;
+import keygenerationcenter.view.RunServerGui;
 import java.io.IOException;
 
 /**
@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws IOException {        
-        LoginGUI attr = new LoginGUI();
+        RunServerGui attr = new RunServerGui();
         attr.setVisible(true);
     }   
 }

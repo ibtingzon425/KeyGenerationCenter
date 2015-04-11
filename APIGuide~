@@ -1,0 +1,32 @@
+Key Generation Center (KGC)
+---------------------------
+#Starting the KGC server# 
+SSLServer server = new SSLServer(PORTNO, KEYSTOREFILE, KEYSTOREPWD);
+server_thread = new Thread(server, "Server");
+server_thread.start();
+
+#Public_Key and Master_Key Generation#
+Note: This should be done when initializing the server, and should be done only ONCE.
+The public key and master key are then saved to the project's local directory.
+ 
+private final String PUBKEY = "pub_key";
+private final String MASTERKEY = "master_key";
+KeyGen keygen = new KeyGen(PUBKEY, MASTERKEY);
+//Makes sure public key and master key do not already exist
+if (!(new File(PUBKEY).exists()) && !(new File(MASTERKEY).exists())) 
+        keygen.generateKeysBethen(); #BethenCourt Implementation
+	keygen.generateKeysPiratte(); #PIRATTE Implementation
+
+
+#Secret_Key Generation
+keygen.generateSecretKeyBethen(USERID, ATTRIBUTE_ARRAY);
+
+#Delete Secret_Key
+keygen.remove(userid);
+
+Key Manager (KM)
+-----------------
+SSLKGCClient client = new SSLKGCClient(USERID, HOST, PORT, KEYSTOREFILE, KEYSTOREPWD);
+
+#Fetch public and master key from server
+client.fetchPubKeys();

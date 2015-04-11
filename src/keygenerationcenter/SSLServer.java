@@ -1,8 +1,12 @@
 package keygenerationcenter;
 
-import keygenerationcenter.view.KeyGenGUI;
 import java.io.*;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import javax.net.ssl.*;
 import keygenerationcenter.dao.CommandFailedException;
 
@@ -14,36 +18,28 @@ public class SSLServer implements Runnable{
     
     //Referenced http://www.herongyang.com/JDK/SSL-Socket-Communication-Testing-Program.html
     
-    protected int PORT;
-    protected String KEYSTORE;
-    protected char[] PWD;
+    private final String KEYSTORE;
+    private final char[] PWD;
+    private final int PORT;
+    private final String DIR;  
+    
+    private final KeyGen keygen;
+    private final String PUBKEY = "pub_key";
+    private final String MASTERKEY = "master_key";
     
     private SSLServerSocket serverSocket;
     private DataInputStream streamIn =  null;
     private DataOutputStream streamOut = null;
     
-    private KeyGen kg;
-    private KeyGenGUI aa;
-    
     public SSLServer(int port, String keystore, char[] pwd) throws CommandFailedException{
-        String dir = System.getProperty("user.dir");
+        DIR = System.getProperty("user.dir");
         PORT = port;
-        KEYSTORE = dir + "/SSLkeys/server.jks";
-        PWD = "password".toCharArray();
-        //KEYSTORE = keystore;
-        //PWD = pwd;
+        KEYSTORE = DIR + "/SSLkeys/server.jks"; //KEYSTORE = keystore;
+        PWD = "password".toCharArray(); //PWD = pwd; 
         
-        //Generate system-wide public and master keys
-        kg = new KeyGen();
-        File pub_key = new File("pub_key");
-        File master_key = new File("master_key");
-        
-        if (!pub_key.exists() && !master_key.exists())
-            kg.generateKeys();
-        
-        //Call Attribute Authority GUI 
-        aa = new KeyGenGUI();
-        aa.setVisible(true);
+        keygen = new KeyGen(PUBKEY, MASTERKEY);
+        if (!(new File(PUBKEY).exists()) && !(new File(MASTERKEY).exists()))
+            keygen.generateKeysPiratte();
     }
     
     @Override
@@ -67,55 +63,77 @@ public class SSLServer implements Runnable{
              
              //Begin connection with clients
              while(!Thread.currentThread().isInterrupted()){
-             
-             //Connect to Client
+                //Connect to Client
                 SSLSocket clientSocket = (SSLSocket) serverSocket.accept();
                 System.out.println("Accepted connection : " + clientSocket);    
                 streamOut = new DataOutputStream(clientSocket.getOutputStream());
                 streamIn = new DataInputStream(new BufferedInputStream(clientSocket.getInputStream()));
                 
-             //Server receives Client's message 
-                String line = streamIn.readUTF();
-                System.out.println(line);
-                
-                if (line.equals("attributes")){
-                //Server recieves Client's username
-                    String username = streamIn.readUTF();
-                    System.out.println(username);  
-                    aa.addUserToList(username);
-                    String appId = null;
-                }
-                else if (line.equals("master_key") || line.equals("pub_key")){
-                // Server sends key file
-                    File myFile = new File (line);
+                //Server receives client's request for a certain file
+                File myFile;
+                String filesize;
+                String message = streamIn.readUTF();
+                switch (message) {
+                    case "master_key":
+                    case "pub_key":
+                        myFile = new File (message);
+                           
+                        //Server sends file size
+                        filesize = "" + (int)myFile.length();
+                        streamOut.writeUTF(filesize);
+                        streamOut.flush();
+                        
+                        this.sendFile(clientSocket, myFile); 
+                        break;
+                    case "secret_key":
+                        //Server recieves Client's userid
+                        String userid = streamIn.readUTF();
+                        System.out.println("UserID received is: " + userid);
+                           
+                        //Server recieves Client's requested attributes
+                        String attributes = streamIn.readUTF();
+                        System.out.println("Attributes recieved is: " + attributes);
+                             
+                        //parse attributes into an array of strings
+                        String strArray[] = attributes.split("\\s+");
+                        
+                        keygen.generateSecretKeyBethen(userid, strArray);
+                        message = userid;
+                        myFile = new File (message);
+                         
+                        //Server sends file size
+                        filesize = "" + (int)myFile.length();
+                        streamOut.writeUTF(filesize);
+                        streamOut.flush();
 
-                //Server sends file size
-                    String filesize = "" + (int)myFile.length();
-                    streamOut.writeUTF(filesize);
-                    streamOut.flush();
-
-                //Server sends file     
-                    FileInputStream fis = new FileInputStream(myFile);
-                    BufferedInputStream bis = new BufferedInputStream(fis);
-                    BufferedOutputStream out = new BufferedOutputStream(clientSocket.getOutputStream());
-                    byte[] bytes = new byte[(int)myFile.length()];
-                    
-                    int count;
-                    while ((count = bis.read(bytes)) > 0) {
-                        out.write(bytes, 0, count);
-                    }
-                    
-                    out.flush();
-                    out.close();
-                    fis.close();
-                    bis.close();
-                    
-                    System.out.println("File successfully sent!");
-                    streamOut.flush();
-                }
+                        this.sendFile(clientSocket, myFile);
+                        break;
+                    case "ACK":
+                        userid = streamIn.readUTF();
+                        keygen.remove(userid);
+                        break;
+                 }                                
              }
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
+        } catch (CommandFailedException |KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException | KeyManagementException e) {
+        } 
     }
+    
+    private void sendFile(SSLSocket clientSocket, File newFile) throws IOException{
+         //Server sends file
+         FileInputStream fis = null;
+         fis = new FileInputStream(newFile);
+         BufferedInputStream bis = new BufferedInputStream(fis);
+         BufferedOutputStream out = new BufferedOutputStream(clientSocket.getOutputStream());
+         byte[] bytes = new byte[(int)newFile.length()];
+         int count;
+         while ((count = bis.read(bytes)) > 0) {
+             out.write(bytes, 0, count);
+         }
+         out.flush();
+         out.close();
+         fis.close();
+         bis.close();
+         streamOut.flush();
+         System.out.println("File successfully sent.");
+    }   
 }
