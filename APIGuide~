@@ -1,32 +1,57 @@
+---------------------------
 Key Generation Center (KGC)
 ---------------------------
+
 #Starting the KGC server# 
+-------------------------
 SSLServer server = new SSLServer(PORTNO, KEYSTOREFILE, KEYSTOREPWD);
 server_thread = new Thread(server, "Server");
 server_thread.start();
 
-#Public_Key and Master_Key Generation#
-Note: This should be done when initializing the server, and should be done only ONCE.
-The public key and master key are then saved to the project's local directory.
+#KEY GENERATION#
+----------------
+MODE values: 0 for Piratte, 1 for Bethen
  
 private final String PUBKEY = "pub_key";
 private final String MASTERKEY = "master_key";
-KeyGen keygen = new KeyGen(PUBKEY, MASTERKEY);
-//Makes sure public key and master key do not already exist
-if (!(new File(PUBKEY).exists()) && !(new File(MASTERKEY).exists())) 
-        keygen.generateKeysBethen(); #BethenCourt Implementation
-	keygen.generateKeysPiratte(); #PIRATTE Implementation
 
+KeyGen keygen = new KeyGen(MODE, PUBKEY, MASTERKEY);
 
-#Secret_Key Generation
+#Public_Key and Master_Key Generation#
+--------------------------------------
+Note: This should be done when initializing the server, and should be done only ONCE.
+The public key and master key are saved to the project's local directory. 
+
+keygen.setProxy(HOST, PORT, KEYSTORE, KEYSTOREPWD);
+keygen.generatePubKeys();
+
+#Secret_Key Generation#
+-----------------------
 keygen.generateSecretKeyBethen(USERID, ATTRIBUTE_ARRAY);
 
-#Delete Secret_Key
-keygen.remove(userid);
+#Remove Secret_Key#
+-------------------
+keygen.remove(USERID);
 
+-----------------
 Key Manager (KM)
 -----------------
-SSLKGCClient client = new SSLKGCClient(USERID, HOST, PORT, KEYSTOREFILE, KEYSTOREPWD);
 
-#Fetch public and master key from server
-client.fetchPubKeys();
+#Initialize client#
+-------------------
+SSLKGCClient client = new SSLKGCClient(HOST, PORT, KEYSTOREFILE, KEYSTOREPWD);
+
+#Fetch pub, master, secret keys from KGC server#
+--------------------------------------------
+client.fetchKeys(USERID, ATTRIBUTES);
+
+#UPLOADING (& ENCRYPTING), DOWNLOADING (& DECRYPTING) in AWS#
+------------------------------------------------------
+AWSAPI awsapi = new AWSAPI(USERID, ACCESSKEYID, SECRETACCESSKEY);
+awsapi.setProxy(String PROXYHOST, int PROXYPORT, String PUBKEY, String PWD)
+awsapi.upload(FILENAME, POLICY, BUCKETNAME);
+awsapi.download(FILENAME, BUCKET, FILE_DESTINATION_PATH);
+List<String> getBucketList(); #lists available buckets
+ List<String> listFiles(String bucketname) #Lists the file in the bucket
+
+

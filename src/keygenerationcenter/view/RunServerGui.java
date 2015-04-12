@@ -53,7 +53,7 @@ public class RunServerGui extends javax.swing.JFrame {
             }
         });
 
-        port.setText("4000");
+        port.setText("5000");
 
         jLabel2.setText("Port");
 
